@@ -25,13 +25,17 @@ class App extends Component {
     this.setState({messages: array})
   }
 
+  star = (message, array) =>{
+    message.starred = !message.starred
+    this.setState({messages: array})
+  }
 
 
   render() {
     return (<div className="App">
       <Navbar/>
       <Toolbar/>
-      <MessageList messages={this.state.messages} updateRead={this.updateRead}  onCheck={this.onCheck} check={this.check}/>
+      <MessageList messages={this.state.messages} updateRead={this.updateRead}  onCheck={this.onCheck} check={this.check} star={this.star}/>
     </div>);
   }
 }

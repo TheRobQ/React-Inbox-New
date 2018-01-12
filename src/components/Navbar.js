@@ -12,7 +12,7 @@ const Navbar = () => {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand" href="/">Inbox Styleguide</a>
+          <a className="navbar-brand" href="https://galvanize-inbox-styleguide.herokuapp.com/#component-7">Inbox Styleguide</a>
         </div>
         <div className="collapse navbar-collapse">
           <ul className="nav navbar-nav">

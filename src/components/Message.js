@@ -7,19 +7,33 @@ export default class Message extends React.Component {
   handleChange = (e) =>{
     return this.props.onCheck(this.props.message, this.props.array)
   }
+
   toggle = (e) => {
-   console.log(this.myDiv);
+   console.log(this.message);
    e.preventDefault();
    return this.props.updateRead(this.props.message, this.props.array)
  }
+
+ toggleStar = (e) => {
+  console.log(this.message.starred);
+  e.preventDefault();
+  return this.props.star(this.props.message, this.props.array)
+}
+
+ starChange = ()=>{
+   if(this.message.starred === true){
+     return "star fa fa-star"
+   }
+   return "star fa fa-star-o"
+ }
  read = () => {
-   if (this.props.message.read === true) {
+   if (this.message.read === true) {
      return 'read'
    }
    return 'unread'
  }
   check = () => {
-    if (this.props.message.checked === true) {
+    if (this.message.checked === true) {
       return "checked"
     }
     return ""
@@ -32,7 +46,6 @@ export default class Message extends React.Component {
  }
 
   render() {
-    //this.addLabel(this.message)
 
     return (
       <div className={`row message ${this.read()} ${this.yellow()}`} >
@@ -42,7 +55,7 @@ export default class Message extends React.Component {
               <input type="checkbox" onChange={this.handleChange} checked={this.check()} />
             </div>
             <div className="col-xs-2">
-              <i className="star fa fa-star-o"></i>
+              <i className={this.starChange()} onClick={this.toggleStar}></i>
             </div>
           </div>
         </div>
