@@ -1,6 +1,21 @@
 import React from 'react';
 
-const Toolbar = () => {
+const Toolbar = (props) => {
+
+  var toggleAll = (e) =>{
+    //e.preventDefault()
+    return props.toggleRead()
+  }
+
+  const check = () =>{
+    if(props.isToggleOn === false){
+      return "fa fa-plus"
+    }
+    if(props.isToggleOn === true){
+      return "fa fa-check-square-o"
+    }
+      //return "fa fa-plus"
+  }
   return (
     <div className="row toolbar">
       <div className="col-md-12">
@@ -13,8 +28,8 @@ const Toolbar = () => {
           <i className="fa fa-plus"></i>
         </a>
 
-        <button className="btn btn-default">
-          <i className="fa fa-minus-square-o"></i>
+        <button className="btn btn-default" onClick={toggleAll}>
+          <i className={check()}></i>
         </button>
 
         <button className="btn btn-default">Mark As Read</button>

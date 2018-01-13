@@ -1,21 +1,21 @@
 import React from 'react';
-import update from 'immutability-helper';
+//import update from 'immutability-helper';
 
 export default class Message extends React.Component {
   message = this.props.message
 
   handleChange = (e) =>{
+    console.log(this.message);
     return this.props.onCheck(this.props.message, this.props.array)
   }
 
   toggle = (e) => {
-   console.log(this.message);
    e.preventDefault();
    return this.props.updateRead(this.props.message, this.props.array)
  }
 
  toggleStar = (e) => {
-  console.log(this.message.starred);
+  //console.log(this.message.starred);
   e.preventDefault();
   return this.props.star(this.props.message, this.props.array)
 }
@@ -33,13 +33,13 @@ export default class Message extends React.Component {
    return 'unread'
  }
   check = () => {
-    if (this.message.checked === true) {
+    if (this.message.selected === true) {
       return "checked"
     }
     return ""
   }
   yellow = () => {
-   if (this.props.message.checked) {
+   if (this.message.selected) {
      return 'selected'
    }
    return 'none'
