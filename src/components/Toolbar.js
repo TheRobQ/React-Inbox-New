@@ -47,18 +47,24 @@ const Toolbar = (props) => {
 
   const updateNumber = () => {
     var number = props.counter();
-    console.log(props)
+    //console.log(props)
     return number
   }
 
-const apply = (event) =>{
-  console.log(event.target.value);
-  props.applyLabel(event.target.value)
-}
+  const apply = (event) => {
+    console.log(event.target.value);
+    props.applyLabel(event.target.value)
+  }
 
-const remove = (event) => {
-  props.removeLabel(event.target.value)
-}
+  const remove = (event) => {
+    props.removeLabel(event.target.value)
+  }
+
+  const trash = (event) => {
+    event.preventDefault()
+    props.delete()
+  }
+
   return (<div className="row toolbar">
     <div className="col-md-12">
       <p className="pull-right">
@@ -84,7 +90,7 @@ const remove = (event) => {
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
       </select>
-      
+
       <select className="form-control label-select" value="option.value" onChange={remove}>
         <option>Remove label</option>
         <option value="dev">dev</option>
@@ -92,7 +98,7 @@ const remove = (event) => {
         <option value="gschool">gschool</option>
       </select>
 
-      <button className="btn btn-default">
+      <button className="btn btn-default" onClick={trash}>
         <i className="fa fa-trash-o"></i>
       </button>
     </div>
