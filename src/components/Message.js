@@ -5,7 +5,7 @@ export default class Message extends React.Component {
   message = this.props.message
 
   handleChange = (e) =>{
-    console.log(this.message);
+    //console.log(this.message);
     return this.props.onCheck(this.props.message, this.props.array)
   }
 
