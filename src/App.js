@@ -23,6 +23,12 @@ class App extends Component {
     this.delete = this.delete.bind(this)
   }
 
+  async componentDidMount() {
+    const response = await fetch('http://localhost:8082/api/messages')
+    const json = await response.json()
+    this.setState({messages: response})
+  }
+
   delete() {
     var array = []
     this.state.messages.map(message => {
