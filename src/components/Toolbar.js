@@ -1,14 +1,14 @@
 import React from 'react';
-
+//import Compose from './Compose'
 const Toolbar = (props) => {
 
-  var toggleAll = (e) => {
+  var toggleAll = (event) => {
     //e.preventDefault()
     return props.toggleRead()
   }
 
-  var markAsRead = (e) => {
-    e.preventDefault()
+  var markAsRead = (event) => {
+    event.preventDefault()
     return props.read()
   }
 
@@ -65,6 +65,19 @@ const Toolbar = (props) => {
     props.delete()
   }
 
+  const expandHandle = (event) =>{
+    event.preventDefault()
+    props.expand()
+  }
+
+  const compButton = () =>{
+    if(props.display === true){
+      return "fa fa-minus-square-o"
+    }
+    if(props.display === false){
+      return "fa fa-plus"
+    }
+  }
   return (<div className="row toolbar">
     <div className="col-md-12">
       <p className="pull-right">
@@ -72,8 +85,8 @@ const Toolbar = (props) => {
         unread messages
       </p>
 
-      <a className="btn btn-danger">
-        <i className="fa fa-plus"></i>
+      <a className="btn btn-danger" onClick={expandHandle}>
+        <i className={compButton()}></i>
       </a>
 
       <button className="btn btn-default" onClick={toggleAll}>

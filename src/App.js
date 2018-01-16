@@ -4,6 +4,7 @@ import './App.css';
 import MessageList from './components/MessageList'
 import Toolbar from './components/Toolbar'
 import Navbar from './components/Navbar'
+import Compose from './components/Compose'
 //import update from 'immutability-helper';
 
 class App extends Component {
@@ -11,8 +12,9 @@ class App extends Component {
     super(props)
     //console.log(props);
     this.state = {
-      messages: this.props.messages,
-      isToggleOn: false
+      messages: [],
+      isToggleOn: false,
+      display: false
     }
     this.toggleRead = this.toggleRead.bind(this)
     this.read = this.read.bind(this)
@@ -21,41 +23,104 @@ class App extends Component {
     this.applyLabel = this.applyLabel.bind(this)
     this.removeLabel = this.removeLabel.bind(this)
     this.delete = this.delete.bind(this)
+    this.expand = this.expand.bind(this)
   }
 
   async componentDidMount() {
     const response = await fetch('http://localhost:8082/api/messages')
     const json = await response.json()
-    this.setState({messages: response})
+    //console.log(json._embedded.messages);
+    this.setState({messages: json._embedded.messages})
   }
 
-  delete() {
+  submit =() => {
+
+  }
+  expand = () =>{
+    if(this.state.display === true){
+     this.setState(prevState => ({display: false}))
+   }
+     if(this.state.display === false){
+       this.setState({display: true})
+     }
+     //console.log(this.state.display);
+  }
+
+  delete = async () => {
     var array = []
+    var indexes = []
+    var object = {
+      'messageIds': indexes,
+      "command": "delete"
+    }
     this.state.messages.map(message => {
       if (message.selected === false || message.selected === undefined) {
         array.push(message)
       }
-      this.setState(prevState => ({messages: array}))
-    })
-  }
-
-  removeLabel(label) {
-    let array = this.state.messages.map(message => {
       if (message.selected === true) {
-        message.labels.splice(message.labels.indexOf(label))
+        indexes.push(message.id)
       }
       return message
+    })
+    var response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
     })
     this.setState(prevState => ({messages: array}))
   }
 
-  applyLabel(label) {
+  removeLabel = async (label) => {
+    let indexes =[]
+    var object = {
+      'messageIds': indexes,
+      "command": "removeLabel",
+       "label": label
+    }
     let array = this.state.messages.map(message => {
       if (message.selected === true) {
-        message.labels.push(label)
+        message.labels.splice(message.labels.indexOf(label))
+        indexes.push(message.id)
       }
       return message
     })
+    var response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
+    })
+    this.setState(prevState => ({messages: array}))
+  }
+
+  applyLabel = async (label) => {
+    let indexes =[]
+    var object = {
+      'messageIds': indexes,
+      "command": "addLabel",
+       "label": label
+    }
+    let array = this.state.messages.map(message => {
+      if (message.selected === true) {
+        message.labels.push(label)
+        indexes.push(message.id)
+      }
+      return message
+    })
+    var response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
+    })
+    //console.log(label);
     this.setState(prevState => ({messages: array}))
   }
 
@@ -96,32 +161,72 @@ class App extends Component {
     }
   }
 
-  read = () => {
-    let array = this.state.messages.map(message => {
+  read = async () => {
+    let indexes=[]
+    const object = {
+      'messageIds': indexes,
+      "command": "read",
+      "read": true
+    }
+    let array = this.state.messages.map( (message) => {
       if (message.selected === true) {
         message.read = true
+        indexes.push(message.id)
       }
-      //console.log(message)
       return message
     })
-    //console.log('click');
-    this.setState({messages: array})
+    var read = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
+    })
+    this.setState( prevState => ({messages: array}))
   }
 
-  unread() {
+  unread = async () => {
+    let indexes=[]
+    const object = {
+      'messageIds': indexes,
+      "command": "read",
+      "read": false
+    }
     let array = this.state.messages.map(message => {
       if (message.selected === true) {
         message.read = false
+        indexes.push(message.id)
       }
       //console.log(message)
       return message
     })
-    //console.log('click');
-    this.setState({messages: array})
+    var unread = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
+    })
+    this.setState( prevState => ({messages: array}))
   }
 
-  updateRead = (message, array) => {
+  updateRead = async (message, array) => {
+    var object = {
+      'messageIds': [message.id],
+      "command": "read",
+      "read": !message.read
+    }
     message.read = !message.read
+    var read = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
+    })
     this.setState({messages: array})
   }
 
@@ -130,8 +235,23 @@ class App extends Component {
     this.setState({messages: array})
   }
 
-  star = (message, array) => {
+  star = async (message, array) => {
+    const object = {
+      'messageIds': [message.id],
+      "command": "star",
+      "star": !message.starred
+    }
+    //console.log(obj);
     message.starred = !message.starred
+    var response = await fetch('http://localhost:8082/api/messages', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
+    })
+    //console.log(response);
     this.setState({messages: array})
   }
 
@@ -140,7 +260,9 @@ class App extends Component {
     //console.log(this.counter());
     return (<div className="App">
       <Navbar/>
-      <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete}/>
+      <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete} expand={this.expand} display={this.state.display}/>
+      
+      <Compose display={this.state.display} submit={this.submit}/>
 
       <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>
     </div>);
@@ -148,15 +270,3 @@ class App extends Component {
 }
 
 export default App;
-// toggleRead() {
-//     if(this.state.isToggleOn === false){
-//     let array = this.state.messages.slice(0)
-//     array.forEach(message => message.selected = true)
-//      this.setState({messages: array, isToggleOn: true})
-//      console.log(array);}
-//      if(this.state.isToggleOn === true){
-//      let array = this.state.messages.slice(0)
-//      array.forEach(message => message.selected = false)
-//       this.setState({messages: array, isToggleOn: false})
-//       console.log(array);}
-//   }
