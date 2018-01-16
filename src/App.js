@@ -5,6 +5,11 @@ import MessageList from './components/MessageList'
 import Toolbar from './components/Toolbar'
 import Navbar from './components/Navbar'
 import Compose from './components/Compose'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
 //import update from 'immutability-helper';
 
 class App extends Component {
