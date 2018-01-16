@@ -14,7 +14,9 @@ class App extends Component {
     this.state = {
       messages: [],
       isToggleOn: false,
-      display: false
+      display: false,
+      // subject: '',
+      // body: ''
     }
     this.toggleRead = this.toggleRead.bind(this)
     this.read = this.read.bind(this)
@@ -33,9 +35,25 @@ class App extends Component {
     this.setState({messages: json._embedded.messages})
   }
 
-  submit =() => {
-
+  submit = async (subject, body) => {
+    let object={
+      subject: subject,
+      body: body
+    }
+    var response = await fetch('http://localhost:8082/api/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(object)
+    })
+    var newMesage = await response.json()
+    var array = [...this.state.messages, newMesage]
+    console.log(response.json);
+     this.setState(prevState => ({display: false, messages: array}))
   }
+
   expand = () =>{
     if(this.state.display === true){
      this.setState(prevState => ({display: false}))
@@ -261,8 +279,8 @@ class App extends Component {
     return (<div className="App">
       <Navbar/>
       <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete} expand={this.expand} display={this.state.display}/>
-      
-      <Compose display={this.state.display} submit={this.submit}/>
+
+      <Compose display={this.state.display} submit={this.submit} subject={this.state.subject} body={this.state.body}/>
 
       <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>
     </div>);
