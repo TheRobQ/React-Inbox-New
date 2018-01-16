@@ -1,4 +1,5 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
 //import Compose from './Compose'
 const Toolbar = (props) => {
 
@@ -65,30 +66,34 @@ const Toolbar = (props) => {
     props.delete()
   }
 
-  const expandHandle = (event) =>{
-    event.preventDefault()
+  const expandHandle = (event) => {
+    //event.preventDefault()
     props.expand()
   }
 
-  const compButton = () =>{
-    if(props.display === true){
+  const compButton = () => {
+    console.log(props.display);
+    if (props.display === true) {
       return "fa fa-minus-square-o"
     }
-    if(props.display === false){
+    if (props.display === false) {
       return "fa fa-plus"
     }
   }
+
+  const composing = props.display
+
   return (<div className="row toolbar">
     <div className="col-md-12">
       <p className="pull-right">
         <span className="badge badge">{updateNumber()}</span>
         unread messages
       </p>
-
-      <a className="btn btn-danger" onClick={expandHandle}>
+      {composing ? <Link to='/' className="btn btn-danger" onClick={expandHandle}>
         <i className={compButton()}></i>
-      </a>
-
+      </Link> : <Link to="/compose" className="btn btn-danger" onClick={expandHandle}>
+        <i className={compButton()}></i>
+      </Link>}
       <button className="btn btn-default" onClick={toggleAll}>
         <i className={check()}></i>
       </button>

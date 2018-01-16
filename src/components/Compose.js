@@ -1,4 +1,6 @@
 import React from 'react'
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom'
+
 
 export default class Compose extends React.Component {
   constructor(props) {
@@ -31,7 +33,7 @@ export default class Compose extends React.Component {
   }
 
   send = (event) => {
-    event.preventDefault()
+    //event.preventDefault()
     let subject = this.state.subject
     let body = this.state.body
     //console.log(body);
@@ -59,7 +61,10 @@ export default class Compose extends React.Component {
       </div>
       <div className="form-group">
         <div className="col-sm-8 col-sm-offset-2">
-          <input type="submit" value="Send" className="btn btn-primary" onClick={this.send}/>
+          <Link to="/" className="btn btn-primary" onClick={this.send}>
+            Send
+            {/* <input type="submit" value="Send" className="btn btn-primary" onClick={this.send}/> */}
+          </Link>
         </div>
       </div>
     </form>)

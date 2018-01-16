@@ -16,10 +16,9 @@ const Navbar = () => {
         </div>
         <div className="collapse navbar-collapse">
           <ul className="nav navbar-nav">
-            <li><a href="/">Components</a></li>
-            <li><a href="/example">Example</a></li>
-            <li><a href="/css">CSS</a></li>
-            <li><a href="/seeds">Seeds</a></li>
+            <li><a href="https://galvanize-inbox-styleguide.herokuapp.com/">Components</a></li>
+            <li><a href="https://galvanize-inbox-styleguide.herokuapp.com/css">CSS</a></li>
+            <li><a href="https://galvanize-inbox-styleguide.herokuapp.com/seeds">Seeds</a></li>
           </ul>
         </div>
       </div>

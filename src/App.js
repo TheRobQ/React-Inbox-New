@@ -8,7 +8,8 @@ import Compose from './components/Compose'
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  Switch
 } from 'react-router-dom'
 //import update from 'immutability-helper';
 
@@ -60,6 +61,7 @@ class App extends Component {
   }
 
   expand = () =>{
+
     if(this.state.display === true){
      this.setState(prevState => ({display: false}))
    }
@@ -281,14 +283,26 @@ class App extends Component {
   render() {
     //console.log(this.state.isToggleOn);
     //console.log(this.counter());
-    return (<div className="App">
-      <Navbar/>
-      <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete} expand={this.expand} display={this.state.display}/>
+    // <Route
+    //   path="/my/path"
+    //   render={(routeProps) => (
+    //     <MyComponent {...routeProps} {...props} />
+    //   )}
+    // />
 
-      <Compose display={this.state.display} submit={this.submit} subject={this.state.subject} body={this.state.body}/>
+    return (
+      <div className="App">
 
-      <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>
-    </div>);
+        <Navbar/>
+        <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete} expand={this.expand} display={this.state.display}/>
+
+        <Route path='/compose' render={() => (<Compose display={this.state.display} submit={this.submit} subject={this.state.subject} body={this.state.body} />
+        )} />
+
+        <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>
+
+      </div>
+      );
   }
 }
 
