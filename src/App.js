@@ -21,8 +21,6 @@ class App extends Component {
       messages: [],
       isToggleOn: false,
       display: false,
-      // subject: '',
-      // body: ''
     }
     this.toggleRead = this.toggleRead.bind(this)
     this.read = this.read.bind(this)
@@ -243,7 +241,7 @@ class App extends Component {
       "command": "read",
       "read": !message.read
     }
-    message.read = !message.read
+    message.read = true
     var read = await fetch('http://localhost:8082/api/messages', {
       method: 'PATCH',
       headers: {
@@ -281,25 +279,16 @@ class App extends Component {
   }
 
   render() {
-    //console.log(this.state.isToggleOn);
-    //console.log(this.counter());
-    // <Route
-    //   path="/my/path"
-    //   render={(routeProps) => (
-    //     <MyComponent {...routeProps} {...props} />
-    //   )}
-    // />
-
     return (
       <div className="App">
+        <Route  path='/' render={() =>(<Navbar/>)} />
+        <Route  path='/' render={() =>(
+          <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete} expand={this.expand} display={this.state.display}/>)} />
 
-        <Navbar/>
-        <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete} expand={this.expand} display={this.state.display}/>
+          <Route path='/compose' render={() => (<Compose display={this.state.display} submit={this.submit} subject={this.state.subject} body={this.state.body} />
+          )} />
 
-        <Route path='/compose' render={() => (<Compose display={this.state.display} submit={this.submit} subject={this.state.subject} body={this.state.body} />
-        )} />
-
-        <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>
+          <Route  path='/' render={() =>( <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>)} />
 
       </div>
       );

@@ -72,7 +72,7 @@ const Toolbar = (props) => {
   }
 
   const compButton = () => {
-    console.log(props.display);
+    //console.log(props.display);
     if (props.display === true) {
       return "fa fa-minus-square-o"
     }

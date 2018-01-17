@@ -15,16 +15,16 @@ export default class Compose extends React.Component {
     this.send = this.send.bind(this);
   }
 
-  hidden = () => {
-    //console.log(this.props.display);
-    if (this.props.display === true) {
-      return ''
-    }
-    if (this.props.display === false) {
-      return 'hidden'
-    }
-  }
-
+//   hidden = () => {
+//     //console.log(this.props.display);
+//     if (this.props.display === true) {
+//       return ''
+//     }
+//     if (this.props.display === false) {
+//       return ''
+//     }
+//   }
+// ${this.hidden()}
   getSubject = (event) => {
     this.setState({subject: event.target.value})
   }
@@ -41,7 +41,7 @@ export default class Compose extends React.Component {
   }
   render() {
 
-    return (<form className={`form-horizontal well ${this.hidden()}`}>
+    return (<form className={`form-horizontal well`}>
       <div className="form-group">
         <div className="col-sm-8 col-sm-offset-2">
           <h4>Compose Message</h4>
