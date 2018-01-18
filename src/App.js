@@ -290,9 +290,9 @@ class App extends Component {
 
           <Route  path='/' render={() =>( <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>)} />
 
-      </div>
-      );
-  }
-}
+          </div>
+          );
+        }
+          }
 
-export default App;
+          export default App;
