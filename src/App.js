@@ -21,6 +21,7 @@ class App extends Component {
       messages: [],
       isToggleOn: false,
       display: false,
+      body: ''
     }
     this.toggleRead = this.toggleRead.bind(this)
     this.read = this.read.bind(this)
@@ -30,6 +31,7 @@ class App extends Component {
     this.removeLabel = this.removeLabel.bind(this)
     this.delete = this.delete.bind(this)
     this.expand = this.expand.bind(this)
+    this.bodyMe = this.bodyMe.bind(this)
   }
 
   async componentDidMount() {
@@ -37,6 +39,19 @@ class App extends Component {
     const json = await response.json()
     //console.log(json._embedded.messages);
     this.setState({messages: json._embedded.messages})
+  }
+
+  // async componentDidMount() {
+  //   const response2 = await fetch(`http://localhost:8082/api/messages/${message.id}`)
+  //   const json2 = await response2.json()
+  //   //console.log(json._embedded.messages);
+  //   this.setState({body: json2.body})
+  // }
+
+  bodyMe = async (message) => {
+    var response = await fetch(`http://localhost:8082/api/messages/${message.id}`)
+    var json = await response.json()
+    this.setState(prevState => ({body: json.body}))
   }
 
   submit = async (subject, body) => {
@@ -283,12 +298,32 @@ class App extends Component {
       <div className="App">
         <Route  path='/' render={() =>(<Navbar/>)} />
         <Route  path='/' render={() =>(
-          <Toolbar toggleRead={this.toggleRead} isToggleOn={this.state.isToggleOn} messages={this.state.messages} read={this.read} unread={this.unread} counter={this.counter} applyLabel={this.applyLabel} removeLabel={this.removeLabel} delete={this.delete} expand={this.expand} display={this.state.display}/>)} />
+          <Toolbar
+            toggleRead={this.toggleRead} i
+            sToggleOn={this.state.isToggleOn}
+            messages={this.state.messages}
+            read={this.read}
+            unread={this.unread}
+            counter={this.counter}
+            applyLabel={this.applyLabel}
+            removeLabel={this.removeLabel}
+            delete={this.delete}
+            expand={this.expand}
+            display={this.state.display}/>)} />
 
-          <Route path='/compose' render={() => (<Compose display={this.state.display} submit={this.submit} subject={this.state.subject} body={this.state.body} />
-          )} />
+        <Route path='/compose' render={() => (<Compose
+          display={this.state.display}
+          submit={this.submit}
+          subject={this.state.subject}
+          body={this.state.body} />
+        )} />
 
-          <Route  path='/' render={() =>( <MessageList messages={this.state.messages} updateRead={this.updateRead} onCheck={this.onCheck} star={this.star} checkAll={this.checkAll}/>)} />
+        <Route  path='/' render={() =>( <MessageList messages={this.state.messages} updateRead={this.updateRead}
+          onCheck={this.onCheck}
+          star={this.star}
+          checkAll={this.checkAll}
+          bodyMe={this.bodyMe}
+          body={this.state.body} />)} />
 
           </div>
           );

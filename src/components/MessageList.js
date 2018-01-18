@@ -5,10 +5,19 @@ import Message from './Message'
 export default class MessageList extends React.Component {
 
 render() {
-  const {messages, updateRead, onCheck, checked, star, checkAll, messageBody, body} = this.props
+  const {messages, updateRead, onCheck, checked, star, checkAll, bodyMe, body} = this.props
   //console.log(this.props);
     return (<div>
-      {messages.map(message => (<Message key={message.id} message={message} updateRead={updateRead} array={messages}  onCheck={onCheck} checked={checked} star={star} checkAll = {checkAll} messageBody={messageBody} body={body}/>))}
+      {messages.map(message => (<Message key={message.id}
+        message={message}
+        updateRead={updateRead}
+        array={messages}
+        onCheck={onCheck}
+        checked={checked}
+        star={star}
+        checkAll = {checkAll}
+        bodyMe={bodyMe}
+        body={body}/>))}
     </div>)
   }
 }

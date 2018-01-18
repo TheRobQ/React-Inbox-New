@@ -1,30 +1,18 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom'
+import Body from './body'
 //import update from 'immutability-helper';
 
 export default class Message extends React.Component {
-  constructor(props) {
-    super(props)
-    //console.log(props);
-    this.state = {
-      body: ''
-    }
-  }
   message = this.props.message;
-   bodyMe = async (event) => {
-    var response = await fetch(`http://localhost:8082/api/messages/${this.props.message.id}`)
-    var json = await response.json()
-    this.setState(prevState => ({body: json.body}))
-    console.log(this.state.body)
-  }
 
   handleChange = (e) => {
     //console.log(this.message);
     return this.props.onCheck(this.props.message, this.props.array)
   }
 
-  toggle = (e) => {
-    e.preventDefault();
+  toggle = () => {
+    //e.preventDefault();
     return this.props.updateRead(this.props.message, this.props.array)
   }
 
@@ -58,7 +46,14 @@ export default class Message extends React.Component {
     }
     return 'none'
   }
-
+  bigClick = (e) =>{
+    this.props.bodyMe(this.props.message);
+    this.toggle()
+  }
+  renderMe = (message) =>{
+      this.message.read = true
+      return this.props.bodyMe(this.props.message)
+  }
   render() {
 
     return (<div className={`row message ${this.read()} ${this.yellow()}`}>
@@ -72,19 +67,18 @@ export default class Message extends React.Component {
           </div>
         </div>
       </div>
-      <div className="col-xs-11" onClick={this.toggle}>
+      <div className="col-xs-11" onClick={this.bigClick}>
         {
           this.message.labels.map((ele, i) => {
             return (<span key={i} className="label label-warning">{ele}</span>)
           })
         }
         {/* <span onClick={this.toggle}> */}
-        <Link to={`/messages/${this.props.message.id}`} onClick={this.bodyMe} value={this.props.message.id}>
+        <Link to={`/messages/${this.props.message.id}`}  value={this.props.message.id}>
           {this.props.message.subject}
         </Link>
-        <Route path={`/messages/${this.props.message.id}`} render={() => (<div className={`col-xs-11 col-xs-offset-1`}>
-          {this.state.body}
-        </div>)}/> {/* </span> */}
+        <Route path={`/messages/${this.props.message.id}`} render={() => (
+          <Body body={this.props.body} renderMe={this.renderMe}/> )}/>
       </div>
     </div>)
   }
