@@ -282,34 +282,38 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Route  path='/' render={() =>(<Navbar/>)} />
         <Route  path='/' render={() =>(
-          <Toolbar
-            toggleRead={this.toggleRead} 
-            isToggleOn={this.state.isToggleOn}
-            messages={this.state.messages}
-            read={this.read}
-            unread={this.unread}
-            counter={this.counter}
-            applyLabel={this.applyLabel}
-            removeLabel={this.removeLabel}
-            delete={this.delete}
-            expand={this.expand}
-            display={this.state.display}/>)} />
+          <div>
+            <Navbar/>
 
-        <Route path='/compose' render={() => (<Compose
-          display={this.state.display}
-          submit={this.submit}
-          subject={this.state.subject}
-          body={this.state.body} />
+            <Toolbar
+              toggleRead={this.toggleRead}
+              isToggleOn={this.state.isToggleOn}
+              messages={this.state.messages}
+              read={this.read}
+              unread={this.unread}
+              counter={this.counter}
+              applyLabel={this.applyLabel}
+              removeLabel={this.removeLabel}
+              delete={this.delete}
+              expand={this.expand}
+              display={this.state.display}/>
+
+            <Route path='/compose' render={() => (<Compose
+              display={this.state.display}
+              submit={this.submit}
+              subject={this.state.subject}
+              body={this.state.body} />
+            )} />
+
+            <MessageList
+              messages={this.state.messages}
+              updateRead={this.updateRead}
+              onCheck={this.onCheck}
+              star={this.star}
+              checkAll={this.checkAll} />
+          </div>
         )} />
-
-        <Route  path='/' render={() =>( <MessageList
-          messages={this.state.messages}
-          updateRead={this.updateRead}
-          onCheck={this.onCheck}
-          star={this.star}
-          checkAll={this.checkAll} /> )} />
           </div>
           );
         }

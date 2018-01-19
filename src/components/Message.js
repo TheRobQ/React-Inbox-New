@@ -16,6 +16,7 @@ export default class Message extends React.Component {
     var response = await fetch(`http://localhost:8082/api/messages/${this.props.message.id}`)
     var json = await response.json();
     this.setState({body: json.body})
+    //return this.props.updateRead(this.props.message, this.props.array)
   }
 
   bodyMe = async (message) => {
@@ -66,8 +67,8 @@ export default class Message extends React.Component {
     this.bodyMe(this.props.message);
     this.toggle()
   }
-  renderMe = (message) =>{
-        return this.props.updateRead(this.props.message, this.props.array)
+  renderMe = () =>{
+      return this.props.updateRead(this.props.message, this.props.array)
   }
 
   render() {
@@ -93,7 +94,7 @@ export default class Message extends React.Component {
           {this.props.message.subject}
         </Link>
         <Route path={`/messages/${this.props.message.id}`} render={() => (
-          <Body body={this.state.body} message={this.message} renderMe={this.renderMe}/> )}/>
+          <Body body={this.state.body} message={this.message} updateRead={this.props.updateRead} array={this.props.array}/> )}/>
       </div>
     </div>)
   }
