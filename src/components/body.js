@@ -1,11 +1,10 @@
 import React from 'react';
 
-const Body = (props) =>{
-  console.log(props.body);
-  return(
+export default class Body extends React.Component{
+    
+render(){  return(
   <div className={`col-xs-11 col-xs-offset-1`}>
-    {props.body}
+    {this.props.body}
   </div>)
 }
-
-export default Body
+}

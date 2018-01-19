@@ -16,8 +16,7 @@ render() {
         checked={checked}
         star={star}
         checkAll = {checkAll}
-        bodyMe={bodyMe}
-        body={body}/>))}
+                                />))}
     </div>)
   }
 }

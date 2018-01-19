@@ -4,15 +4,31 @@ import Body from './body'
 //import update from 'immutability-helper';
 
 export default class Message extends React.Component {
+  constructor(props) {
+    super(props)
+    //console.log(props);
+    this.state = {
+      body: "" }
+    }
   message = this.props.message;
 
+  async componentDidMount(){
+    var response = await fetch(`http://localhost:8082/api/messages/${this.props.message.id}`)
+    var json = await response.json();
+    this.setState({body: json.body})
+  }
+
+  bodyMe = async (message) => {
+    var response = await fetch(`http://localhost:8082/api/messages/${this.props.message.id}`)
+    var json = await response.json()
+    this.setState(prevState => ({body: json.body}))
+  }
+
   handleChange = (e) => {
-    //console.log(this.message);
     return this.props.onCheck(this.props.message, this.props.array)
   }
 
   toggle = () => {
-    //e.preventDefault();
     return this.props.updateRead(this.props.message, this.props.array)
   }
 
@@ -47,15 +63,14 @@ export default class Message extends React.Component {
     return 'none'
   }
   bigClick = (e) =>{
-    this.props.bodyMe(this.props.message);
+    this.bodyMe(this.props.message);
     this.toggle()
   }
   renderMe = (message) =>{
-      this.message.read = true
-      return this.props.bodyMe(this.props.message)
+        return this.props.updateRead(this.props.message, this.props.array)
   }
-  render() {
 
+  render() {
     return (<div className={`row message ${this.read()} ${this.yellow()}`}>
       <div className="col-xs-1">
         <div className="row">
@@ -78,7 +93,7 @@ export default class Message extends React.Component {
           {this.props.message.subject}
         </Link>
         <Route path={`/messages/${this.props.message.id}`} render={() => (
-          <Body body={this.props.body} renderMe={this.renderMe}/> )}/>
+          <Body body={this.state.body} message={this.message} renderMe={this.renderMe}/> )}/>
       </div>
     </div>)
   }

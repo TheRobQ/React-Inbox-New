@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 //import logo from './logo.svg';
 import './App.css';
@@ -21,7 +22,6 @@ class App extends Component {
       messages: [],
       isToggleOn: false,
       display: false,
-      body: ''
     }
     this.toggleRead = this.toggleRead.bind(this)
     this.read = this.read.bind(this)
@@ -31,7 +31,6 @@ class App extends Component {
     this.removeLabel = this.removeLabel.bind(this)
     this.delete = this.delete.bind(this)
     this.expand = this.expand.bind(this)
-    this.bodyMe = this.bodyMe.bind(this)
   }
 
   async componentDidMount() {
@@ -39,19 +38,6 @@ class App extends Component {
     const json = await response.json()
     //console.log(json._embedded.messages);
     this.setState({messages: json._embedded.messages})
-  }
-
-  // async componentDidMount() {
-  //   const response2 = await fetch(`http://localhost:8082/api/messages/${message.id}`)
-  //   const json2 = await response2.json()
-  //   //console.log(json._embedded.messages);
-  //   this.setState({body: json2.body})
-  // }
-
-  bodyMe = async (message) => {
-    var response = await fetch(`http://localhost:8082/api/messages/${message.id}`)
-    var json = await response.json()
-    this.setState(prevState => ({body: json.body}))
   }
 
   submit = async (subject, body) => {
@@ -299,8 +285,8 @@ class App extends Component {
         <Route  path='/' render={() =>(<Navbar/>)} />
         <Route  path='/' render={() =>(
           <Toolbar
-            toggleRead={this.toggleRead} i
-            sToggleOn={this.state.isToggleOn}
+            toggleRead={this.toggleRead} 
+            isToggleOn={this.state.isToggleOn}
             messages={this.state.messages}
             read={this.read}
             unread={this.unread}
@@ -318,13 +304,12 @@ class App extends Component {
           body={this.state.body} />
         )} />
 
-        <Route  path='/' render={() =>( <MessageList messages={this.state.messages} updateRead={this.updateRead}
+        <Route  path='/' render={() =>( <MessageList
+          messages={this.state.messages}
+          updateRead={this.updateRead}
           onCheck={this.onCheck}
           star={this.star}
-          checkAll={this.checkAll}
-          bodyMe={this.bodyMe}
-          body={this.state.body} />)} />
-
+          checkAll={this.checkAll} /> )} />
           </div>
           );
         }
