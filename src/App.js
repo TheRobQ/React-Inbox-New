@@ -35,7 +35,6 @@ class App extends Component {
   async componentDidMount() {
     const response = await fetch('http://localhost:8082/api/messages')
     const json = await response.json()
-    //console.log(json._embedded.messages);
     this.setState({messages: json._embedded.messages})
   }
 
@@ -143,7 +142,6 @@ class App extends Component {
       },
       body: JSON.stringify(object)
     })
-    //console.log(label);
     this.setState(prevState => ({messages: array}))
   }
 
@@ -169,7 +167,6 @@ class App extends Component {
         messages: array,
         isToggleOn: !prevState.isToggleOn
       }))
-      //console.log(array);}
     }
     if (this.state.isToggleOn === true) {
       let array = this.state.messages.map(message => {
@@ -180,7 +177,6 @@ class App extends Component {
         messages: array,
         isToggleOn: !prevState.isToggleOn
       }))
-      // console.log(array);
     }
   }
 
@@ -221,7 +217,6 @@ class App extends Component {
         message.read = false
         indexes.push(message.id)
       }
-      //console.log(message)
       return message
     })
     var unread = await fetch('http://localhost:8082/api/messages', {
@@ -264,7 +259,6 @@ class App extends Component {
       "command": "star",
       "star": !message.starred
     }
-    //console.log(obj);
     message.starred = !message.starred
     var response = await fetch('http://localhost:8082/api/messages', {
       method: 'PATCH',
