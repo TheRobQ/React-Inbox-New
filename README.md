@@ -1,6 +1,6 @@
 ## Sample React functionality
 
-A simple React project that mimics the functionality of an inbox program. The application access a custom API. 
+A ReactJS project that mimics the functionality of an inbox program. The application access a custom API and uses React Router. 
 A user could use the toolbar as expected to add labels, remove messages, select messages, etc.  
 ![inbox screenshot](https://github.com/TheRobQ/React-Inbox-New/blob/master/images/SCreen2.png)
 
