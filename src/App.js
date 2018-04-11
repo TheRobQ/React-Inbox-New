@@ -22,6 +22,7 @@ class App extends Component {
       isToggleOn: false,
       display: false,
     }
+    this.expand = this.expand.bind(this)
     this.toggleRead = this.toggleRead.bind(this)
     this.read = this.read.bind(this)
     this.unread = this.unread.bind(this)
@@ -29,7 +30,6 @@ class App extends Component {
     this.applyLabel = this.applyLabel.bind(this)
     this.removeLabel = this.removeLabel.bind(this)
     this.delete = this.delete.bind(this)
-    this.expand = this.expand.bind(this)
   }
 
   async componentDidMount() {
@@ -54,11 +54,10 @@ class App extends Component {
     var newMesage = await response.json()
     var array = [...this.state.messages, newMesage]
     console.log(response.json);
-     this.setState(prevState => ({display: false, messages: array}))
+    this.setState(prevState => ({display: false, messages: array}))
   }
 
   expand = () =>{
-
     if(this.state.display === true){
      this.setState(prevState => ({display: false}))
    }
